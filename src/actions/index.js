@@ -1,50 +1,41 @@
+import {getConnection, getConnectionStatus, saveConnectionObj, getSunburstData} from "../mapd-connector"
+import {serverInfo} from "../config";
 
-// export const UPDATE_VEGA_LAYER = 'UPDATE_VEGA_LAYER'
-// import {getConnection, getConnectionStatus, renderVega, saveConnectionObj} from "../mapd-connector"
-// import { conv4326To900913 } from '../utils'
-// import {serverInfo} from "../config";
-// import makeVegaSpec from "../vegaspec"
-
-
-// export function updateVegaLayer(size, extent) {
-//
-//   const height = size ? size[1] : 692
-//   const width = size ? size[0] : 1383
-//   // const [xMin, yMin] = conv4326To900913([extent[0], extent[1]])
-//   // const [xMax, yMax] = conv4326To900913([extent[2], extent[3]])
-//
-//   const vegaSpec = makeVegaSpec({
-//     width,
-//     height,
-//     minXBounds: extent ? extent[0] : -27062376.990310084,
-//     maxXBounds: extent ? extent[2] : 27062376.990310084,
-//     minYBounds: extent ? extent[1] : -13540972.434775544,
-//     maxYBounds: extent ? extent[3] : 13540972.434775544
-//
-//   })
-//
-//   return (dispatch) => {
-//
-//     renderVega(vegaSpec)
-//       .then(result => {
-//         dispatch({
-//           type: "UPDATE_VEGA_LAYER",
-//           payload: result
-//         })
-//       })
-//       .catch(error => {
-//         console.log('error: ', error)
-//       })
-//
-//   }
-// }
-
+// connect to the mapd database
+export function connectToMapdDatabase() {
+  return ()  => {
+    getConnection(serverInfo)
+      .then(con => {
+        // save the connection object so we can use it later
+        saveConnectionObj(con)
+        return getConnectionStatus(con)
+      })
+      .catch(error => throw error)
+  }
+}
 
 export function fetchData() {
+  const options = {}
+  const testQuery = "SELECT count(*) AS n FROM flights"
+
+  const sunburstDataQuery =
+        'SELECT Category AS "Category", Sub_Category AS "Sub_Category", Product_Name AS "Product_Name", '+
+        'SUM(sample_orders."Sales") AS "sum__Sales", '+
+        'AVG(sample_orders."Profit") AS "avg__Profit" '+
+        'FROM sample_orders GROUP BY "Category", "Sub_Category", Product_Name '+
+        'ORDER BY "sum__Sales" DESC LIMIT 50000'
+
   return (dispatch) => {
-    dispatch({
+    getSunburstData(testQuery, options)
+      .then(result => {
+        console.log('got query result ', result)
+        dispatch({
           type: "FETCH_DATA",
-          payload: null
+          payload: result
         })
+      })
+      .catch(error => {
+        console.log('error: ', error)
+      })
   }
 }

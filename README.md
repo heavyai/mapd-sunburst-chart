@@ -1,2 +1,2 @@
 # mapd-sunburst-chart
-Standalong example chart integrated with mapd database
+Standalong vega sunburst chart connecting to MapD GPU database via mapd-connector library 

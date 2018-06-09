@@ -13,6 +13,9 @@ class SunburstComponent extends Component {
 
   }
 
+  componentWillMount() {
+    // this.props.fetchData()
+  }
   componentDidMount() {
     vegaEmbed('#sunburst', vegaSpec)
   }
@@ -23,6 +26,7 @@ class SunburstComponent extends Component {
   render() {
     return (
         <div>
+          <button onClick={this.props.fetchData}>Fetch Data</button>
           <div id="sunburst" className={ styles.sunburst }></div>
         </div>
 
