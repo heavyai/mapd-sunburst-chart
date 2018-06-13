@@ -1,5 +1,6 @@
 import {getConnection, getConnectionStatus, saveConnectionObj, getSunburstData} from "../mapd-connector"
 import {serverInfo} from "../config";
+import vegaSpec from "../vegaspec";
 
 // connect to the mapd database
 export function connectToMapdDatabase() {
@@ -16,17 +17,22 @@ export function connectToMapdDatabase() {
 
 export function fetchData() {
   const options = {}
-  const testQuery = "SELECT count(*) AS n FROM flights"
 
   const sunburstDataQuery =
-        'SELECT Category AS "Category", Sub_Category AS "Sub_Category", Product_Name AS "Product_Name", '+
-        'SUM(sample_orders."Sales") AS "sum__Sales", '+
-        'AVG(sample_orders."Profit") AS "avg__Profit" '+
-        'FROM sample_orders GROUP BY "Category", "Sub_Category", Product_Name '+
+        'SELECT Category AS "parent", Sub_Category AS "name", Product_Name AS "id", '+
+        'SUM(SuperStoreSales."Sales") AS "sum__Sales", '+
+        'AVG(SuperStoreSales."Profit") AS "avg__Profit" '+
+        'FROM SuperStoreSales GROUP BY "parent", "name", "id" '+
         'ORDER BY "sum__Sales" DESC LIMIT 50000'
 
+  const simplifiedSunburstDataQuery =
+      'SELECT Row_ID AS "unique_id", Category AS "category", Sub_Category AS "sub_category", Product_Name AS "name", '+
+      'SuperStoreSales."Sales" AS "Sales" '+
+      'FROM SuperStoreSales ' +
+      'ORDER BY "Sales" DESC LIMIT 20'
+
   return (dispatch) => {
-    getSunburstData(testQuery, options)
+    getSunburstData(simplifiedSunburstDataQuery, options)
       .then(result => {
         console.log('got query result ', result)
         dispatch({

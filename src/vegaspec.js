@@ -1,24 +1,27 @@
-const vegaSpec =
+const vegaSpec = (mapdData) => (
 {
   "$schema": "https://vega.github.io/schema/vega/v4.json",
   "width": 600,
   "height": 600,
   "padding": 5,
   "autosize": "none",
-
+  "signals": [
+    {"name": "generate", "value": true, "bind": {"input": "checkbox"}}
+  ],
   "data": [
     {
       "name": "tree",
-      "url": "https://vega.github.io/editor/data/flare.json",
+      // "url": "https://vega.github.io/editor/data/flare.json",
+      "values": mapdData,
       "transform": [
         {
-          "type": "stratify",
-          "key": "id",
-          "parentKey": "parent"
+          "type": "nest",
+          "generate": {"signal": "generate"},
+          "keys": ["category", "sub_category"]
         },
         {
           "type": "partition",
-          "field": "size",
+          "field": "Sales",
           "sort": {"field": "value"},
           "size": [{"signal": "2 * PI"}, {"signal": "width / 2"}],
           "as": ["a0", "r0", "a1", "r1", "depth", "children"]
@@ -44,7 +47,7 @@ const vegaSpec =
           "x": {"signal": "width / 2"},
           "y": {"signal": "height / 2"},
           "fill": {"scale": "color", "field": "depth"},
-          "tooltip": {"signal": "datum.name + (datum.size ? ', ' + datum.size + ' bytes' : '')"}
+          "tooltip": {"signal": "datum.name + (datum.Sales ? ', ' + datum.Sales : '')"}
         },
         "update": {
           "startAngle": {"field": "a0"},
@@ -63,6 +66,6 @@ const vegaSpec =
       }
     }
   ]
-}
+})
 
 export default vegaSpec

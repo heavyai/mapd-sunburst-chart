@@ -10,17 +10,19 @@ import vegaSpec from "../vegaspec"
 class SunburstComponent extends Component {
   constructor(props) {
     super(props);
-
   }
 
   componentWillMount() {
     // this.props.fetchData()
   }
-  componentDidMount() {
-    vegaEmbed('#sunburst', vegaSpec)
-  }
 
   componentWillUpdate(nextProps){
+
+    if(this.props.sunburstData){
+      // const modified_data = this.props.sunburstData.unshift({"unique_id": "1", "name": "SuperStore", "category": null})
+      const sunburst_data = vegaSpec(this.props.sunburstData)
+      vegaEmbed('#sunburst', sunburst_data)
+    }
   }
 
   render() {
@@ -36,7 +38,7 @@ class SunburstComponent extends Component {
 
 function mapStateToProps(state)  {
   return {
-    sunburstData: state.sunburstData
+    sunburstData: state.sunburst
   }
 }
 
