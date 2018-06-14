@@ -23,18 +23,17 @@ export function fetchData() {
         'SUM(SuperStoreSales."Sales") AS "sum__Sales", '+
         'AVG(SuperStoreSales."Profit") AS "avg__Profit" '+
         'FROM SuperStoreSales GROUP BY "parent", "name", "id" '+
-        'ORDER BY "sum__Sales" DESC LIMIT 50000'
+        'ORDER BY "sum__Sales" DESC LIMIT 500'
 
   const simplifiedSunburstDataQuery =
       'SELECT Row_ID AS "unique_id", Category AS "category", Sub_Category AS "sub_category", Product_Name AS "name", '+
       'SuperStoreSales."Sales" AS "Sales" '+
       'FROM SuperStoreSales ' +
-      'ORDER BY "Sales" DESC LIMIT 20'
+      'ORDER BY "Sales" DESC LIMIT 200'
 
   return (dispatch) => {
     getSunburstData(simplifiedSunburstDataQuery, options)
       .then(result => {
-        console.log('got query result ', result)
         dispatch({
           type: "FETCH_DATA",
           payload: result

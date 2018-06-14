@@ -47,7 +47,7 @@ const vegaSpec = (mapdData) => (
           "x": {"signal": "width / 2"},
           "y": {"signal": "height / 2"},
           "fill": {"scale": "color", "field": "depth"},
-          "tooltip": {"signal": "datum.name + (datum.Sales ? ', ' + datum.Sales : '')"}
+          "tooltip": {"signal": "datum.name ? datum.name + ', Sales: ' + datum.Sales : datum.key"}
         },
         "update": {
           "startAngle": {"field": "a0"},
