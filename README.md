@@ -3,8 +3,12 @@ Standalong vega sunburst chart connecting to MapD GPU database via mapd-connecto
 
 # Quick Start
 
-## Step 1: Install dependencies
+## Step 1: Install Node and Npm
+
+## Step 2: Clone the repository
+
+## Step 3: Install dependencies
 `npm install`
 
-## Step 2: Run start script
+## Step 4: Run start script
 `npm run start`

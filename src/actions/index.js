@@ -1,6 +1,9 @@
-import {getConnection, getConnectionStatus, saveConnectionObj, getSunburstData} from "../mapd-connector"
+import {getConnection, getConnectionStatus, saveConnectionObj, getSunburstData, getTables} from "../mapd-connector"
 import {serverInfo} from "../config";
 import vegaSpec from "../vegaspec";
+
+export const FETCH_DATA = 'FETCH_DATA'
+
 
 // connect to the mapd database
 export function connectToMapdDatabase() {
@@ -34,9 +37,11 @@ export function fetchData() {
   return (dispatch) => {
     getSunburstData(simplifiedSunburstDataQuery, options)
       .then(result => {
+        const sunburst_data = vegaSpec(result)
+
         dispatch({
-          type: "FETCH_DATA",
-          payload: result
+          type: FETCH_DATA,
+          payload: sunburst_data
         })
       })
       .catch(error => {
