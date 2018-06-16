@@ -1,4 +1,4 @@
-import { FETCH_DATA, GET_TABLES } from '../actions/index'
+import { FETCH_DATA } from '../actions/index'
 
 export default function (state = null, action) {
   switch (action.type){
