@@ -41,13 +41,13 @@ export function fetchData() {
 
         //vega sunburst data from vega spec
         const vega_data = vegaSpec(result);
-
+console.log('query result ', result)
         //creates a nested hierarchical data structure
         const nested_data = d3.nest()
           .key(function (d) {return d.category; })
           .key(function (d) {return d.sub_category; })
           .entries(result)
-
+console.log('nested Data ', nested_data)
         //modifying the nested data for d3 sunburst specific
         const d3_data = {"key": "SuperStoreSales", "values": nested_data}
 
