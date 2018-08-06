@@ -51,7 +51,7 @@ class SunburstComponent extends Component {
         .children(function (d) {
           return Array.isArray(d.values) ? d.values : null
         })
-        .value(function(d) { return d.Sales; });
+        .value(function(d) { return d.key; });
 
     const arc = d3.svg.arc()
         .startAngle(function(d) { return Math.max(0, Math.min(2 * Math.PI, x(d.x))); })

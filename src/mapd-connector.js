@@ -7,6 +7,7 @@ let savedConnection = null
 function establishConnection(config) {
   return new Promise((resolve, reject) => {
     connector
+        .protocol(config.protocol)
         .host(config.host)
         .port(config.port)
         .dbName(config.database)
