@@ -27,7 +27,7 @@ class SunburstComponent extends Component {
   create_sunburst() {
     this.props.fetchData()
     if(this.props.sunburst){
-      vegaEmbed('#vega_sunburst', this.props.sunburst.vega_data)
+      // vegaEmbed('#vega_sunburst', this.props.sunburst.vega_data)
       this.create_d3_sunburst()
     }
   }
@@ -71,6 +71,7 @@ class SunburstComponent extends Component {
       .attr("d", arc)
       .style("fill", function(d) {
         return color((d.children ? d : d.key).key); })
+      .style("stroke", "white")
       .on("click", click)
       .append("title")
       .text(function(d) { return d.key + "\n" + formatNumber(d.value); });

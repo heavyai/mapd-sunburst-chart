@@ -35,13 +35,12 @@ export function fetchData() {
 
   const treeSunburstQuery = 'SELECT '+dim1+', '+dim2+', ' +dim3+', ' +measure+' AS "key" FROM '+tableName+' GROUP BY '+dim1+', '+dim2+', '+dim3+' , "key" LIMIT 100'
 
-  const testQuery = 'SELECT '+dim1+', '+dim2+', '+dim3+', COUNT(*) AS val FROM nyc_trees_2015_683k GROUP BY '+dim1+', '+dim2+', '+dim3+' ORDER BY val DESC LIMIT 100'
+  const testQuery = 'SELECT '+dim1+', '+dim2+', '+dim3+', COUNT(*) AS "key" FROM '+tableName+' GROUP BY '+dim1+', '+dim2+', '+dim3+' ORDER BY "key" DESC LIMIT 100'
 
   return (dispatch) => {
 
-    getSunburstData(treeSunburstQuery, options)
+    getSunburstData(testQuery, options)
       .then(result => {
-
         //vega sunburst data from vega spec
         const vega_data = vegaSpec(result);
 
@@ -53,7 +52,6 @@ export function fetchData() {
           .key(function (d) {return d[dim3]; })
           .entries(result)
         // console.timeEnd('timingNest')
-
 
         //modifying the nested data for d3 sunburst specific
         const d3_data = {"key": tableName, "values": nested_data}
